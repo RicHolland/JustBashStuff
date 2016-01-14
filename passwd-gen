@@ -1,0 +1,13 @@
+#!/bin/bash
+
+while [ ${#psswd} -lt 6 ]; do
+  wrd=$(shuf -n 1 /usr/share/dict/linux.words)
+  if [ ${#wrd} -le 5 ]; then
+    tmp=$wrd$psswd
+    if [ ${#tmp} -le 8 ]; then
+      psswd=$tmp
+    fi
+  fi
+done
+
+echo $psswd
