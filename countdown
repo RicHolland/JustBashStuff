@@ -1,0 +1,31 @@
+#!/bin/bash
+
+[ -z "$*" ] && echo ERROR: argument required. && exit 2
+
+date -d "$*" +%Y-%m-%d' '%H:%M:%S || exit 3
+
+lpad ()
+{
+    printf %03d $1
+}
+
+comma ()
+{
+    num=$1;
+    if [ $num -eq 0 ]; then
+        echo $(sed s/^0*//g <(echo $2));
+    else
+        if [ -n "$2" ]; then
+            echo $(comma $((num/1000)) $(lpad $((num%1000))),$2);
+        else
+            echo $(comma $((num/1000)) $(lpad $((num%1000))));
+        fi;
+    fi
+}
+
+SECS=$(date -d "$*" +%s)
+
+clear
+while true; do
+    echo -en "\e[9$((RANDOM%9))m\t$(comma $(($SECS - $(date +%s))))\r\e[0m"
+done
